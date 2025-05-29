@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jobringer - Home & Jobs</title>
+<style>
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+    scroll-behavior: smooth; /* smooth scroll */
+  }
+  a {
+    text-decoration: none;
+    color: var(--link);
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: var(--link-hover);
+  }
+  
+  /* Light and Dark mode colors with gradients */
+  :root {
+    --bg: #f0f4ff;
+    --text: #222;
+    --link: #0073e6;
+    --link-hover: #004a99;
+    --header-bg: linear-gradient(90deg, #1a237e, #3949ab);
+    --header-text: white;
+    --card-bg: #ffffff;
+    --card-shadow: rgba(0,0,0,0.12);
+    --button-bg: #ff6f00;
+    --button-hover-bg: #ff8f00;
+    --tag-bg: #d1d9ff;
+    --tag-text: #3f51b5;
+  }
+  body.dark {
+    --bg: #121212;
+    --text: #eee;
+    --link: #90caf9;
+    --link-hover: #bbdefb;
+    --header-bg: linear-gradient(90deg, #0d0d3a, #3949ab);
+    --header-text: #eee;
+    --card-bg: #1e1e2f;
+    --card-shadow: rgba(0,0,0,0.85);
+    --button-bg: #ffa000;
+    --button-hover-bg: #ffb300;
+    --tag-bg: #3949ab;
+    --tag-text: #c5cae9;
+  }
+
+  /* Header */
+  header {
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+  header .logo {
+    font-weight: 900;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    user-select: none;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    cursor: pointer;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+  }
+  nav ul li a {
+    color: var(--header-text);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background-color 0.3s, color 0.3s ease;
+  }
+  nav ul li a:hover {
+    color: #ffd54f;
+    background: rgba(255 213 79 / 0.2);
+  }
+
+  /* Dark mode toggle button */
+  #darkModeToggle {
+    background: transparent;
+    border: 2px solid var(--header-text);
+    color: var(--header-text);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  #darkModeToggle:hover {
+    background: var(--header-text);
+    color: var(--header-bg);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  }
+
+  /* Responsive nav - hamburger for mobile */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  .menu-toggle div {
+    width: 28px;
+    height: 3.5px;
+    background: var(--header-text);
+    margin: 5px 0;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+  }
+
+  /* Search bar */
+  .search-bar {
+    background: var(--card-bg);
+    padding: 25px 35px;
+    margin: 30px auto;
+    max-width: 1000px;
+    box-shadow: 0 3px 12px var(--card-shadow);
+    border-radius: 12px;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+    transition: box-shadow 0.3s ease;
+  }
+  .search-bar:hover {
+    box-shadow: 0 6px 24px var(--card-shadow);
+  }
+  .search-bar input, .search-bar select {
+    flex: 1 1 220px;
+    padding: 14px 18px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .search-bar input:focus, .search-bar select:focus {
+    border-color: var(--link);
+    box-shadow: 0 0 8px var(--link);
+  }
+  .search-bar button {
+    background: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 15px 32px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(255,111,0,0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .search-bar button:hover {
+    background: var(--button-hover-bg);
+    box-shadow: 0 6px 18px rgba(255,143,0,0.7);
+  }
+
+  /* Job listings container */
+  .jobs-container {
+    max-width: 1000px;
+    margin: 0 auto 60px;
+    padding: 0 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+  }
+  /* Single job card */
+  .job-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    box-shadow: 0 3px 12px var(--card-shadow);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: box-shadow 0.35s ease, transform 0.3s ease;
+    cursor: default;
+  }
+  .job-card:hover {
+    box-shadow: 0 10px 30px rgba(26,35,126,0.4);
+    transform: translateY(-6px);
+  }
+  .job-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--link);
+    margin-bottom: 10px;
+    text-transform: capitalize;
+    letter-spacing: 0.03em;
+  }
+  .company-name {
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 15px;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+  .job-details {
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .job-details span {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    user-select: none;
+    text-transform: capitalize;
+  }
+  .apply-btn {
+    background: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 12px rgba(255,111,0,0.5);
+    font-size: 1.1rem;
+  }
+  .apply-btn:hover {
+    background: var(--button-hover-bg);
+    box-shadow: 0 7px 18px rgba(255,143,0,0.7);
+  }
+
+  /* Features section */
+  .features {
+    max-width: 1000px;
+    margin: 0 auto 50px;
+    padding: 0 25px;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .feature {
+    background: var(--card-bg);
+    flex: 1 1 300px;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 3px 12px var(--card-shadow);
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+  }
+  .feature:hover {
+    box-shadow: 0 10px 25px rgba(26,35,126,0.3);
+  }
+  .feature h3 {
+    color: var(--link);
+    font-weight: 900;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  .feature p {
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text);
+    padding: 20px;
+    background: var(--card-bg);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.07);
+    user-select: none;
+  }
+
+  /* Responsive nav menu toggle */
+  @media (max-width: 780px) {
+    nav ul {
+      display: none;
+      flex-direction: column;
+      background: var(--header-bg);
+      width: 100%;
+      padding: 12px 0;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    nav ul.show {
+      display: flex;
+    }
+    .menu-toggle {
+      display: flex;
+    }
+  }
+
+  /* Modal overlay and container for job application */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+  .modal {
+    background: var(--card-bg);
+    color: var(--text);
+    width: 400px;
+    max-width: 90vw;
+    border-radius: 14px;
+    padding: 30px 25px;
+    box-shadow: 0 10px 25px var(--card-shadow);
+    position: relative;
+  }
+  .modal h2 {
+    margin-bottom: 20px;
+    color: var(--link);
+    font-weight: 900;
+    font-size: 1.8rem;
+  }
+  .modal label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: 700;
+  }
+  .modal input, .modal textarea {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    background: var(--bg);
+    color: var(--text);
+    resize: vertical;
+  }
+  .modal input:focus, .modal textarea:focus {
+    border-color: var(--link);
+    outline: none;
+    box-shadow: 0 0 8px var(--link);
+  }
+  .modal textarea {
+    min-height: 100px;
+  }
+  .modal button {
+    margin-top: 18px;
+    background: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 5px 15px rgba(255,111,0,0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .modal button:hover {
+    background: var(--button-hover-bg);
+    box-shadow: 0 7px 20px rgba(255,143,0,0.7);
+  }
+  .modal .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--link);
+    font-weight: 900;
+  }
+  .modal .close-btn:hover {
+    color: var(--button-hover-bg);
+  }
+
+  /* Login form container */
+  .login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    background: var(--card-bg);
+    padding: 30px 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px var(--card-shadow);
+  }
+  .login-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--link);
+    font-weight: 900;
+  }
+  .login-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .login-container input {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    background: var(--bg);
+    color: var(--text);
+    transition: border-color 0.3s ease;
+  }
+  .login-container input:focus {
+    border-color: var(--link);
+    outline: none;
+    box-shadow: 0 0 8px var(--link);
+  }
+  .login-container button {
+    width: 100%;
+    padding: 14px 0;
+    background: var(--button-bg);
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255,111,0,0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .login-container button:hover {
+    background: var(--button-hover-bg);
+    box-shadow: 0 7px 20px rgba(255,143,0,0.7);
+  }
+
+  /* Accessibility focus */
+  button:focus, input:focus, select:focus, a:focus {
+    outline: 3px solid var(--link);
+    outline-offset: 2px;
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" tabindex="0" role="banner" aria-label="Jobringer Logo">Jobringer</div>
+  <nav role="navigation" aria-label="Primary">
+    <ul id="navLinks">
+      <li><a href="#home" tabindex="0">Home</a></li>
+      <li><a href="#jobs" tabindex="0">Jobs</a></li>
+      <li><a href="#companies" tabindex="0">Companies</a></li>
+      <li><a href="#contact" tabindex="0">Contact</a></li>
+      <li><a href="#login-section" tabindex="0">Login</a></li>
+    </ul>
+    <div class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" tabindex="0" role="button">
+      <div></div><div></div><div></div>
+    </div>
+  </nav>
+  <button id="darkModeToggle" aria-label="Toggle Dark Mode">Dark Mode</button>
+</header>
+
+<!-- Hero Section -->
+<section class="hero" id="home" style="text-align:center; padding: 80px 20px 40px;">
+  <h1 style="font-size:2.5rem; color: var(--link); margin-bottom: 18px;">Welcome to Jobringer</h1>
+  <p style="font-size:1.3rem; max-width: 600px; margin: 0 auto 25px;">Find your dream job or the perfect candidate with ease. Your next opportunity starts here.</p>
+  <button onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})" style="padding:16px 36px; font-weight:700; font-size:1.2rem; background: var(--button-bg); border:none; border-radius: 12px; color:#fff; cursor:pointer; box-shadow: 0 5px 15px rgba(255,111,0,0.5); transition: background-color 0.3s ease;">
+    Explore Jobs
+  </button>
+</section>
+
+<!-- Search Bar -->
+<section class="search-bar" aria-label="Job search filters">
+  <input type="text" id="searchInput" placeholder="Search jobs by title or keywords" aria-label="Job title or keywords" />
+  <select id="locationFilter" aria-label="Select job location">
+    <option value="">Select Location</option>
+    <option value="Remote">Remote</option>
+    <option value="New York">New York</option>
+    <option value="San Francisco">San Francisco</option>
+    <option value="Chicago">Chicago</option>
+  </select>
+  <select id="typeFilter" aria-label="Select job type">
+    <option value="">Select Job Type</option>
+    <option value="Full-time">Full-time</option>
+    <option value="Part-time">Part-time</option>
+    <option value="Internship">Internship</option>
+    <option value="Contract">Contract</option>
+  </select>
+  <button type="button" id="searchBtn" aria-label="Search Jobs">Search</button>
+</section>
+
+<!-- Job Listings -->
+<section class="jobs-container" id="jobs" aria-label="Job listings">
+  <!-- Jobs will be injected dynamically -->
+</section>
+
+<!-- Features Section -->
+<section class="features" aria-label="Features of Jobringer">
+  <div class="feature">
+    <h3>Easy Job Search</h3>
+    <p>Filter jobs quickly and find the ones that best fit your skills and preferences.</p>
+  </div>
+  <div class="feature">
+    <h3>Top Companies</h3>
+    <p>Work with reputed companies and enhance your career growth.</p>
+  </div>
+  <div class="feature">
+    <h3>Seamless Application</h3>
+    <p>Apply with one click and track your applications easily from your dashboard.</p>
+  </div>
+</section>
+
+<!-- Login Section -->
+<section class="login-container" id="login-section" aria-label="User login form">
+  <h2>Login to Jobringer</h2>
+  <form id="loginForm" novalidate>
+    <label for="emailInput">Email</label>
+    <input type="email" id="emailInput" name="email" placeholder="you@example.com" required aria-required="true" />
+    <label for="passwordInput">Password</label>
+    <input type="password" id="passwordInput" name="password" placeholder="Enter your password" required aria-required="true" minlength="6" />
+    <button type="submit">Login</button>
+  </form>
+</section>
+
+
+
+<!-- Modal for Apply -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+  <div class="modal" role="document">
+    <button class="close-btn" id="modalCloseBtn" aria-label="Close application form">&times;</button>
+    <h2 id="modalTitle">Apply for Job</h2>
+    <form id="applyForm" novalidate>
+      <label for="applicantName">Full Name</label>
+      <input type="text" id="applicantName" name="applicantName" placeholder="Your full name" required aria-required="true" />
+      <label for="applicantEmail">Email Address</label>
+      <input type="email" id="applicantEmail" name="applicantEmail" placeholder="you@example.com" required aria-required="true" />
+      <label for="applicantResume">Resume Link</label>
+      <input type="url" id="applicantResume" name="applicantResume" placeholder="Link to your resume (e.g., Google Drive)" required aria-required="true" />
+      <label for="applicantMessage">Cover Letter / Message</label>
+      <textarea id="applicantMessage" name="applicantMessage" placeholder="Write your message here..." required aria-required="true"></textarea>
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 Jobringer. All rights reserved.
+</footer>
+
+<script>
+  // Dark mode toggle
+  const toggleBtn = document.getElementById('darkModeToggle');
+  toggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    toggleBtn.textContent = document.body.classList.contains('dark') ? 'Light Mode' : 'Dark Mode';
+  });
+
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('show');
+  });
+  menuToggle.addEventListener('keypress', e => {
+    if(e.key === 'Enter') navLinks.classList.toggle('show');
+  });
+
+  // Sample job data
+  const jobs = [
+    {id: 1, title: "Frontend Developer", company: "TechSoft", location: "New York", type: "Full-time", description: "Build and maintain web interfaces using React and CSS."},
+    {id: 2, title: "Data Analyst Intern", company: "DataSolve", location: "Remote", type: "Internship", description: "Assist in data cleaning, visualization and reporting."},
+    {id: 3, title: "Project Manager", company: "BuildIt", location: "Chicago", type: "Full-time", description: "Manage project timelines, teams and deliverables."},
+    {id: 4, title: "UX Designer", company: "Creativa", location: "San Francisco", type: "Contract", description: "Design user-centric digital products and interfaces."},
+    {id: 5, title: "Backend Engineer", company: "DevWorks", location: "Remote", type: "Full-time", description: "Develop APIs and database solutions."}
+  ];
+
+  const jobsContainer = document.querySelector('.jobs-container');
+
+  function displayJobs(jobsList) {
+    jobsContainer.innerHTML = '';
+    if(jobsList.length === 0) {
+      jobsContainer.innerHTML = '<p style="text-align:center; font-size:1.2rem; color: var(--link);">No jobs found matching your criteria.</p>';
+      return;
+    }
+    jobsList.forEach(job => {
+      const jobEl = document.createElement('div');
+      jobEl.classList.add('job-card');
+      jobEl.tabIndex = 0;
+      jobEl.setAttribute('role', 'article');
+      jobEl.setAttribute('aria-label', `${job.title} at ${job.company}, ${job.location}, ${job.type}`);
+      jobEl.innerHTML = `
+        <h3>${job.title}</h3>
+        <p><strong>Company:</strong> ${job.company}</p>
+        <p><strong>Location:</strong> ${job.location}</p>
+        <p><strong>Type:</strong> ${job.type}</p>
+        <p>${job.description}</p>
+        <button class="apply-btn" aria-label="Apply for ${job.title}">Apply</button>
+      `;
+      jobsContainer.appendChild(jobEl);
+    });
+  }
+
+  displayJobs(jobs);
+
+  // Filter and search functionality
+  const searchInput = document.getElementById('searchInput');
+  const locationFilter = document.getElementById('locationFilter');
+  const typeFilter = document.getElementById('typeFilter');
+  const searchBtn = document.getElementById('searchBtn');
+
+  function filterJobs() {
+    const searchText = searchInput.value.toLowerCase();
+    const location = locationFilter.value;
+    const type = typeFilter.value;
+
+    const filteredJobs = jobs.filter(job => {
+      const matchesText = job.title.toLowerCase().includes(searchText) || job.description.toLowerCase().includes(searchText);
+      const matchesLocation = location ? job.location === location : true;
+      const matchesType = type ? job.type === type : true;
+      return matchesText && matchesLocation && matchesType;
+    });
+
+    displayJobs(filteredJobs);
+  }
+
+  searchBtn.addEventListener('click', filterJobs);
+  searchInput.addEventListener('keyup', e => {
+    if(e.key === 'Enter') filterJobs();
+  });
+  locationFilter.addEventListener('change', filterJobs);
+  typeFilter.addEventListener('change', filterJobs);
+
+  // Modal open/close for Apply
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+  let currentJobTitle = '';
+
+  document.body.addEventListener('click', e => {
+    if(e.target.classList.contains('apply-btn')) {
+      const jobCard = e.target.closest('.job-card');
+      currentJobTitle = jobCard.querySelector('h3').textContent;
+      document.getElementById('modalTitle').textContent = `Apply for ${currentJobTitle}`;
+      modalOverlay.classList.add('active');
+      document.getElementById('applicantName').focus();
+    }
+  });
+
+  modalCloseBtn.addEventListener('click', () => {
+    modalOverlay.classList.remove('active');
+    document.getElementById('applyForm').reset();
+  });
+
+  modalOverlay.addEventListener('click', e => {
+    if(e.target === modalOverlay) {
+      modalOverlay.classList.remove('active');
+      document.getElementById('applyForm').reset();
+    }
+  });
+
+  // Form submission handling (just a mock, no backend)
+  const applyForm = document.getElementById('applyForm');
+  applyForm.addEventListener('submit', e => {
+    e.preventDefault();
+    alert(`Application submitted for ${currentJobTitle} by ${applyForm.applicantName.value}`);
+    modalOverlay.classList.remove('active');
+    applyForm.reset();
+  });
+
+  // Login form validation
+  const loginForm = document.getElementById('loginForm');
+  loginForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = loginForm.email.value.trim();
+    const password = loginForm.password.value.trim();
+    if(email === '' || password.length < 6) {
+      alert('Please enter a valid email and password (min 6 characters).');
+      return;
+    }
+    alert(`Logged in as ${email}`);
+    loginForm.reset();
+  });
+
+</script>
+
+</body>
+</html>
